@@ -10,7 +10,7 @@ var mycarypos=10;
 var loadedCars=[];
 var carsCurrentXPositions=[];
 var carsCurrentYPositions=[];
-
+var numberCars;
 
 var stompClient = null;
 
@@ -32,15 +32,29 @@ initAndRegisterInServer = function(){
         data: JSON.stringify(mycar),
         contentType: "application/json"
     }).then(
-            function(){                
-                alert("Competitor registered successfully!");
-                paintCars();
+            function(){
+                alert("Competitor registered successfully! Wait for the other participants to start.");
+                connectAndSubscribeToCompetitors();
+                //Obtener el total, si son 5 cargar los competidores
+               $.get("races/25/participants",
+                        function (data) {
+                            console.log("DATA" +data.length);
+                            numberCars = data.length;
+                        }
+               );
             },
             function(err){
-                alert("err:"+err.responseText);
+               alert("err:"+err.responseText);
             }
-                 
     );
+};
+
+var validateTotal = function() {
+    if (numberCars == 3){
+        //Cargar competidores
+        console.log('Ya ahí '+ numberCars + '!!');
+        stompClient.send("/topic/competitors", {}, numberCars);
+    }
 };
 
 loadCompetitorsFromServer = function () {
@@ -58,11 +72,16 @@ loadCompetitorsFromServer = function () {
                                     carsCurrentXPositions[car.number] = 10;
                                     carsCurrentYPositions[car.number] = 40 * carCount;
                                     carCount++;
+                                    stompClient.subscribe('/topic/car'+car.number, function (data) {
+                                            msgdata=JSON.parse(data.body);
+                                            carsCurrentXPositions[msgdata.car]=msgdata.xpos;
+                                            paintCars();
+                                        });
+
                                 }
                             }
                     );
                     paintCars();
-                    connectAndSubscribeToCompetitors();
                 }
         );
     }
@@ -73,25 +92,18 @@ loadCompetitorsFromServer = function () {
 function connectAndSubscribeToCompetitors() {
     var socket = new SockJS('/stompendpoint');
     stompClient = Stomp.over(socket);
+
     stompClient.connect({}, function (frame) {
-        console.log('Connected: ' + frame);
 
-        loadedCars.forEach(
-                
-                function (car) {
-                    //don't load my own car
-                    if (car.number!=mycar.number){
-                        stompClient.subscribe('/topic/car'+car.number, function (data) {
-                            msgdata=JSON.parse(data.body);
-                            carsCurrentXPositions[msgdata.car]=msgdata.xpos;   
-                            paintCars();
-                        });
-                    }
-                }
-        );
-
-        
+        stompClient.subscribe('/topic/competitors', function (data) {
+            console.log('Connected: ' + frame);
+            console.log('TOTAL 5 (2) ? ' + data);
+            loadCompetitorsFromServer();
+            $(".controls").prop('disabled', false);
+        });
+        validateTotal();
     });
+
 }
 
 function disconnect() {
@@ -134,10 +146,12 @@ paint=function(car,xposition,yposition,ctx){
 
 
 $(document).ready(
-        
+
         function () {
             console.info('loading script!...');
-            $(".controls").prop('disabled', false);    
+            //Deshabilitar el botón de MOVE MY CAR
+            $(".controls").prop('disabled', true);
+
             $("#racenum").prop('disabled', true);    
         }
 );

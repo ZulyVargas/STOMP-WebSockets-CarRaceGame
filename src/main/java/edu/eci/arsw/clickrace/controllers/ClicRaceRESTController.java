@@ -52,6 +52,7 @@ public class ClicRaceRESTController {
     @RequestMapping(path = "/{racenum}/participants",method = RequestMethod.PUT)
     public ResponseEntity<?> addParticipantNum(@PathVariable(name = "racenum") String racenum,@RequestBody RaceParticipant rp) {
         try {
+            System.out.println("Agregue el participante " + rp);
             services.registerPlayerToRace(Integer.parseInt(racenum), rp);
                     return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (ServicesException ex) {

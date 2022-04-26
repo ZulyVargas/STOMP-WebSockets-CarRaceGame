@@ -22,7 +22,8 @@ public class ClickRaceServicesStub implements ClickRaceServices {
     ConcurrentHashMap<Integer, Set<RaceParticipant>> racesData=new ConcurrentHashMap<>();
     
     public ClickRaceServicesStub(){
-        racesData.put(25, new ConcurrentSkipListSet<>());        
+        //Iniciar la lista ya no con 25
+        racesData.put(25, new ConcurrentSkipListSet<>());
     }
     
     @Override
