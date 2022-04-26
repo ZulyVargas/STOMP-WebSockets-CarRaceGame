@@ -9,6 +9,8 @@ import edu.eci.arsw.clickrace.model.RaceParticipant;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,7 +22,12 @@ public class ClickRaceServicesStub implements ClickRaceServices {
 
     //racenum x racersid_set
     ConcurrentHashMap<Integer, Set<RaceParticipant>> racesData=new ConcurrentHashMap<>();
-    
+
+    //winner id
+    ConcurrentHashMap<Integer, RaceParticipant> racesWinners = new ConcurrentHashMap<>();
+
+
+
     public ClickRaceServicesStub(){
         //Iniciar la lista ya no con 25
         racesData.put(25, new ConcurrentSkipListSet<>());
@@ -47,8 +54,14 @@ public class ClickRaceServicesStub implements ClickRaceServices {
     public Set<RaceParticipant> getRegisteredPlayers(int racenum) throws ServicesException {
         return racesData.get(racenum);
     }
- 
-    
+
+    @Override
+    public void setWinner(int racenum, RaceParticipant rp) throws ServicesException {
+        if (racesWinners.get(racenum)!= null )
+            racesWinners.put(racenum,rp) ;
+    }
+
+
     @Override
     public void removePlayerFromRace(int racenum, RaceParticipant rp) throws ServicesException {
         if (!racesData.containsKey(racenum)){

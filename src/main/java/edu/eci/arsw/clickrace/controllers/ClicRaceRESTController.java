@@ -54,7 +54,7 @@ public class ClicRaceRESTController {
         try {
             System.out.println("Agregue el participante " + rp);
             services.registerPlayerToRace(Integer.parseInt(racenum), rp);
-                    return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (ServicesException ex) {
             Logger.getLogger(ClicRaceRESTController.class.getName()).log(Level.SEVERE, null, ex);
             return new ResponseEntity<>(ex.getLocalizedMessage(),HttpStatus.BAD_REQUEST);
@@ -65,8 +65,25 @@ public class ClicRaceRESTController {
 
     }
 
-    
+    @RequestMapping(path = "/{racenum}/winner",method = RequestMethod.PUT)
+    public ResponseEntity<?> setWinner(@PathVariable(name = "racenum") String racenum,@RequestBody RaceParticipant rp) {
+        try {
+            System.out.println("Agregue el ganador!!! " + rp);
+            services.setWinner(Integer.parseInt(racenum),rp);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (ServicesException ex) {
+            Logger.getLogger(ClicRaceRESTController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>(ex.getLocalizedMessage(),HttpStatus.BAD_REQUEST);
+        } catch (NumberFormatException ex){
+            Logger.getLogger(ClicRaceRESTController.class.getName()).log(Level.SEVERE, null, ex);
+            return new ResponseEntity<>("/{racenum}/ must be an integer value.",HttpStatus.BAD_REQUEST);
+        }
 
-    
+    }
+
+
+
+
+
 
 }

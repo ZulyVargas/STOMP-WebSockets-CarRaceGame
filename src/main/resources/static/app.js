@@ -18,7 +18,32 @@ movex = function(){
     mycarxpos+=10;
     paintCars();
     stompClient.send("/topic/car"+mycar.number, {}, JSON.stringify({car:mycar.number,xpos:mycarxpos}));
+    if (mycarxpos == 100){
+        setWinner();
+
+    }
 };
+
+setWinner = function(){
+        $.ajax({
+            url: "races/25/winner",
+            type: 'PUT',
+            data: JSON.stringify(mycar),
+            contentType: "application/json"
+        }).then(
+                function(){
+                    stompClient.send("/topic/winnerIs", {}, JSON.stringify({winner:mycar.number}));
+                },
+                function(err){
+                   alert("err:"+err.responseText);
+                }
+        );
+
+
+
+
+}
+
 
 
 initAndRegisterInServer = function(){
@@ -72,12 +97,7 @@ loadCompetitorsFromServer = function () {
                                     carsCurrentXPositions[car.number] = 10;
                                     carsCurrentYPositions[car.number] = 40 * carCount;
                                     carCount++;
-                                    stompClient.subscribe('/topic/car'+car.number, function (data) {
-                                            msgdata=JSON.parse(data.body);
-                                            carsCurrentXPositions[msgdata.car]=msgdata.xpos;
-                                            paintCars();
-                                        });
-
+                                    newSubscriptions(car);
                                 }
                             }
                     );
@@ -88,13 +108,28 @@ loadCompetitorsFromServer = function () {
 
 };
 
+function newSubscriptions(car){
+    stompClient.subscribe('/topic/car'+car.number, function (data) {
+        msgdata=JSON.parse(data.body);
+        carsCurrentXPositions[msgdata.car]=msgdata.xpos;
+        paintCars();
+    });
+    stompClient.subscribe('/topic/winnerIs', function (data) {
+        msgdata=JSON.parse(data.body);
+        if (msgdata.winner != mycar.number) {
+            alert("Sorry, you are a loser!!. The winner is :" + msgdata.winner);
+        }else if (msgdata.winner == mycar.number){
+            alert("You are the winner!!");
+        }
+    });
+}
+
 
 function connectAndSubscribeToCompetitors() {
     var socket = new SockJS('/stompendpoint');
     stompClient = Stomp.over(socket);
 
     stompClient.connect({}, function (frame) {
-
         stompClient.subscribe('/topic/competitors', function (data) {
             console.log('Connected: ' + frame);
             console.log('TOTAL 5 (2) ? ' + data);
