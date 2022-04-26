@@ -56,19 +56,24 @@ public class ClickRaceServicesStub implements ClickRaceServices {
 
     @Override
     public void setWinner(int racenum, RaceParticipant rp) throws ServicesException {
-        if (!racesWinners.containsKey(racenum)){
-            System.out.println("Primer if " + rp.getNumber());
+        if (getWinner(racenum)!=null ){
+            throw new ServicesException("Race "+racenum+" have a winner already.");
+        } else {
+            System.out.println("Registering winner.....-.-.-.-.-. " + rp.getNumber());
             racesWinners.put(racenum, rp);
         }
+    }
 
-
+    @Override
+    public RaceParticipant getWinner(int racenum) throws ServicesException {
+        return racesWinners.get(racenum);
     }
 
 
     @Override
     public void removePlayerFromRace(int racenum, RaceParticipant rp) throws ServicesException {
         if (!racesData.containsKey(racenum)){
-            throw new ServicesException("Race "+racenum+" not registered in the server.");
+            throw new ServicesException("Race "+racenum+" already has a winner .");
         }
         else{
             if (!racesData.get(racenum).contains(rp)){

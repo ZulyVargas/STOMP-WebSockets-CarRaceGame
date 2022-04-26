@@ -1,23 +1,23 @@
 
+Zuly Valentina Vargas Ramírez
 
 
-* CONDICIÓN DE CARRERA 1:
+* CONDICIÓN DE CARRERA 1: 
 
-	REGIÓN CRÍTICA:
+	REGIÓN CRÍTICA: Registro de dos participantes con el mismo id al mismo tiempo.
 
-	POSIBLES INCONSISTENCIAS (SI NO SE ELIMINA):
+	POSIBLES INCONSISTENCIAS (SI NO SE ELIMINA): Los tópicos podrían comportarse de manera érronea ya que habría suscripción repetida al mismo id, uno o los dos vehículos no podrían recibir los eventos correctamente.  
 
-	SOLUCIÓN:
+	SOLUCIÓN: Implementar una lista concurrente que permita guardar 1 jugador a la vez, en el método se válida que el vehículo no se encuentre registrado.
 
 
 * CONDICIÓN DE CARRERA 2:
 
-        REGIÓN CRÍTICA:
+        REGIÓN CRÍTICA: Registro de dos ganadores (dos vehículos que alcanzan los 640 puntos al tiempo.)
 
-        POSIBLES INCONSISTENCIAS (SI NO SE ELIMINA):
+        POSIBLES INCONSISTENCIAS (SI NO SE ELIMINA): Se tendrían dos o más ganadores en la carrera, se generaría una inconsistencia en los eventos que indican cual fue el ganador.
 
-        SOLUCIÓN:
-
+        SOLUCIÓN: Implementar una lista concurrente que permita guardar 1 ganador a la vez, en el método se válida que no haya sido registrado ningún ganador en la carrera correspondiente.
 
 ....
 

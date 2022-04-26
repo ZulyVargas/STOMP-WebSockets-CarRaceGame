@@ -68,8 +68,8 @@ public class ClicRaceRESTController {
     @RequestMapping(path = "/{racenum}/winner",method = RequestMethod.PUT)
     public ResponseEntity<?> addWinner(@PathVariable(name = "racenum") String racenum,@RequestBody RaceParticipant rp) {
         try {
-            System.out.println("Agregue el ganador!!! " + rp);
             services.setWinner(Integer.parseInt(racenum),rp);
+            System.out.println("Agregue el ganador!!! " + rp);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (ServicesException ex) {
             Logger.getLogger(ClicRaceRESTController.class.getName()).log(Level.SEVERE, null, ex);

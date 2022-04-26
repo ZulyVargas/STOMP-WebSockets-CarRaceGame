@@ -60,6 +60,7 @@ initAndRegisterInServer = function(){
                         function (data) {
                             console.log("DATA" +data.length);
                             numberCars = data.length;
+                            //Pintar carritos
                         }
                );
             },
@@ -121,7 +122,7 @@ function connectAndSubscribeToCompetitors() {
             console.log('Connected: ' + frame);
             loadCompetitorsFromServer();
             $(".controls").prop('disabled', false);
-        });
+    });
     stompClient.subscribe('/topic/winnerIs', function (data) {
         msgdata=JSON.parse(data.body);
         if (msgdata.winner != mycar.number) {

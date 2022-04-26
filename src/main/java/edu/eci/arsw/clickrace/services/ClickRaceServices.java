@@ -21,4 +21,7 @@ public interface ClickRaceServices {
     public Set<RaceParticipant> getRegisteredPlayers(int racenum) throws ServicesException;
 
     public  void setWinner(int racenum, RaceParticipant rp) throws ServicesException;
+
+    public  RaceParticipant getWinner(int racenum) throws ServicesException;
+
 }
