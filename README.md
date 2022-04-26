@@ -34,8 +34,17 @@ La siguiente, es una vista dinámica -diagrama de actividades- de la versión ac
 
 3. (20%) Realice la vista dinámica (diagrama de actividades) de su solución en la hoja suministrada. 
 
+	En el archivo astah se encuentra. 
+
+	![](img/diag2-Solution.png)
 
 
 ## Entrega
 
 Subir el código fuente actualizado con los puntos del parcial, en el espacio asignado dentro de la plataforma Campus.
+
+
+## Desarrollado (Solución):
+
+Zuly Valentina Vargas Ramírez 
+2022-1

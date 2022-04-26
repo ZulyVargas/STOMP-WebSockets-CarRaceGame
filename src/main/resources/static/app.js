@@ -18,7 +18,7 @@ movex = function(){
     mycarxpos+=10;
     paintCars();
     stompClient.send("/topic/car"+mycar.number, {}, JSON.stringify({car:mycar.number,xpos:mycarxpos}));
-    if (mycarxpos == 100){
+    if (mycarxpos >= 640){
         setWinner();
     }
 };
@@ -70,7 +70,7 @@ initAndRegisterInServer = function(){
 };
 
 var validateTotal = function() {
-    if (numberCars == 3){
+    if (numberCars == 5){
         //Cargar competidores
         console.log('Ya ahí '+ numberCars + '!!');
         stompClient.send("/topic/competitors", {}, numberCars);
