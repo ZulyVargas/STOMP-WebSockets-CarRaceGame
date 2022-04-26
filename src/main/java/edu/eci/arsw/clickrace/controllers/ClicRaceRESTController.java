@@ -66,7 +66,7 @@ public class ClicRaceRESTController {
     }
 
     @RequestMapping(path = "/{racenum}/winner",method = RequestMethod.PUT)
-    public ResponseEntity<?> setWinner(@PathVariable(name = "racenum") String racenum,@RequestBody RaceParticipant rp) {
+    public ResponseEntity<?> addWinner(@PathVariable(name = "racenum") String racenum,@RequestBody RaceParticipant rp) {
         try {
             System.out.println("Agregue el ganador!!! " + rp);
             services.setWinner(Integer.parseInt(racenum),rp);

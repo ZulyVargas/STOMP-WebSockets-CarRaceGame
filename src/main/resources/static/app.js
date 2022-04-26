@@ -20,7 +20,6 @@ movex = function(){
     stompClient.send("/topic/car"+mycar.number, {}, JSON.stringify({car:mycar.number,xpos:mycarxpos}));
     if (mycarxpos == 100){
         setWinner();
-
     }
 };
 
@@ -38,10 +37,6 @@ setWinner = function(){
                    alert("err:"+err.responseText);
                 }
         );
-
-
-
-
 }
 
 
@@ -114,14 +109,6 @@ function newSubscriptions(car){
         carsCurrentXPositions[msgdata.car]=msgdata.xpos;
         paintCars();
     });
-    stompClient.subscribe('/topic/winnerIs', function (data) {
-        msgdata=JSON.parse(data.body);
-        if (msgdata.winner != mycar.number) {
-            alert("Sorry, you are a loser!!. The winner is :" + msgdata.winner);
-        }else if (msgdata.winner == mycar.number){
-            alert("You are the winner!!");
-        }
-    });
 }
 
 
@@ -132,11 +119,22 @@ function connectAndSubscribeToCompetitors() {
     stompClient.connect({}, function (frame) {
         stompClient.subscribe('/topic/competitors', function (data) {
             console.log('Connected: ' + frame);
-            console.log('TOTAL 5 (2) ? ' + data);
             loadCompetitorsFromServer();
             $(".controls").prop('disabled', false);
         });
-        validateTotal();
+    stompClient.subscribe('/topic/winnerIs', function (data) {
+        msgdata=JSON.parse(data.body);
+        if (msgdata.winner != mycar.number) {
+            alert("Sorry, you are a loser!!. The winner is :" + msgdata.winner );
+        }else if (msgdata.winner == mycar.number){
+            alert("You are the winner!!" );
+        }
+        //Deshabilitar el botón de MOVE MY CAR
+        $(".controls").prop('disabled', true);
+    });
+
+    validateTotal();
+
     });
 
 }
