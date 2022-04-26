@@ -60,7 +60,6 @@ initAndRegisterInServer = function(){
                         function (data) {
                             console.log("DATA" +data.length);
                             numberCars = data.length;
-                            //Pintar carritos
                         }
                );
             },
@@ -86,7 +85,7 @@ loadCompetitorsFromServer = function () {
                 function (data) {
                     loadedCars = data;
                     var carCount = 1;
-                    alert("Competitors loaded!");
+
                     loadedCars.forEach(
                             function (car) {
                                 if (car.number != mycar.number) {
@@ -94,9 +93,14 @@ loadCompetitorsFromServer = function () {
                                     carsCurrentYPositions[car.number] = 40 * carCount;
                                     carCount++;
                                     newSubscriptions(car);
+                                    /**if (numberCars==3) {
+                                        newSubscriptions(car);
+                                        alert("Competitors loaded!");
+                                    }**/
                                 }
                             }
                     );
+                    alert("Competitors loaded!");
                     paintCars();
                 }
         );
@@ -130,6 +134,7 @@ function connectAndSubscribeToCompetitors() {
         }else if (msgdata.winner == mycar.number){
             alert("You are the winner!!" );
         }
+        $('#winner').text(msgdata.winner);
         //Deshabilitar el botón de MOVE MY CAR
         $(".controls").prop('disabled', true);
     });
