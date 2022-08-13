@@ -1,6 +1,5 @@
 ## Escuela Colombiana de Ingeniería
 ### Arquitecturas de Software
-### Parcial Segundo Tercio
 
 
 Click race es un juego de carreras multijugador, en el que cada competidor hace desplazar su automovil (identificado con un número elegido por la persona) haciendo clic en un botón. En este juego, gana quien llegue primero a la meta, que en este caso es el extremo derecho del área de la pantalla. Por ahora sólo se manejará una única carrera (identificada cone l número 25), razón por la cual todas las peticiones al Backend del cliente tienen 'quemado' este número: /races/25/...):
@@ -20,7 +19,7 @@ La siguiente, es una vista dinámica -diagrama de actividades- de la versión ac
 
 
 
-### PARCIAL
+### Correcciones:
 
 1. (50%) Ajuste la aplicación:
 
